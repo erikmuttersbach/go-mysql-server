@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/sirupsen/logrus"
+	"log"
 	"time"
 
 	sqle "github.com/src-d/go-mysql-server"
@@ -24,6 +26,8 @@ import (
 // +----------+-------------------+-------------------------------+---------------------+
 // ```
 func main() {
+	logrus.SetLevel(logrus.DebugLevel)
+
 	engine := sqle.NewDefault()
 	engine.AddDatabase(createTestDatabase())
 	engine.AddDatabase(sql.NewInformationSchemaDatabase(engine.Catalog))
@@ -62,5 +66,9 @@ func createTestDatabase() *memory.Database {
 	table.Insert(ctx, sql.NewRow("John Doe", "johnalt@doe.com", []string{}, time.Now()))
 	table.Insert(ctx, sql.NewRow("Jane Doe", "jane@doe.com", []string{}, time.Now()))
 	table.Insert(ctx, sql.NewRow("Evil Bob", "evilbob@gmail.com", []string{"555-666-555", "666-666-666"}, time.Now()))
+
+	count, _ := table.PartitionCount(ctx)
+	log.Printf("Partitions: %d", count)
+
 	return db
 }

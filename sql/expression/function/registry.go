@@ -99,4 +99,5 @@ var Defaults = []sql.Function{
 	sql.Function1{Name: "character_length", Fn: NewCharLength},
 	sql.Function1{Name: "explode", Fn: NewExplode},
 	sql.FunctionN{Name: "regexp_matches", Fn: NewRegexpMatches},
+	sql.Function0{Name: "current_user", Fn: NewCurrentUser},
 }

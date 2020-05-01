@@ -1,5 +1,7 @@
 module github.com/src-d/go-mysql-server
 
+go 1.14
+
 require (
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/VividCortex/gohistogram v1.0.0 // indirect

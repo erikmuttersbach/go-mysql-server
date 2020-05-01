@@ -40,6 +40,7 @@ var (
 	showIndexRegex       = regexp.MustCompile(`^show\s+(index|indexes|keys)\s+(from|in)\s+\S+\s*`)
 	showCreateRegex      = regexp.MustCompile(`^show create\s+\S+\s*`)
 	showVariablesRegex   = regexp.MustCompile(`^show\s+(.*)?variables\s*`)
+	showStatusRegex      = regexp.MustCompile(`^show\s+(.*)?status\s*`)
 	showWarningsRegex    = regexp.MustCompile(`^show\s+warnings\s*`)
 	showCollationRegex   = regexp.MustCompile(`^show\s+collation\s*`)
 	describeRegex        = regexp.MustCompile(`^(describe|desc|explain)\s+(.*)\s+`)
@@ -90,6 +91,8 @@ func Parse(ctx *sql.Context, query string) (sql.Node, error) {
 		return parseShowCreate(s)
 	case showVariablesRegex.MatchString(lowerQuery):
 		return parseShowVariables(ctx, s)
+	case showStatusRegex.MatchString(lowerQuery):
+		return parseShowStatus(ctx, s)
 	case showWarningsRegex.MatchString(lowerQuery):
 		return parseShowWarnings(ctx, s)
 	case showCollationRegex.MatchString(lowerQuery):
