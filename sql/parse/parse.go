@@ -3,8 +3,10 @@ package parse
 import (
 	"bufio"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -365,8 +367,19 @@ func convertSelect(ctx *sql.Context, s *sqlparser.Select) (sql.Node, error) {
 			return nil, err
 		}
 	} else if ok, val := sql.HasDefaultValue(ctx.Session, "sql_select_limit"); !ok {
-		limit := val.(int64)
-		node = plan.NewLimit(int64(limit), node)
+		switch limit := val.(type) {
+		case int:
+		case int8:
+		case int16:
+		case int32:
+		case int64:
+			node = plan.NewLimit(int64(limit), node)
+		default:
+			logrus.Warnf("default value of sql_select_limit is of wrong type %s", reflect.TypeOf(val))
+		}
+
+		/*limit := val.(int64)
+		node = plan.NewLimit(int64(limit), node)*/
 	}
 
 	return node, nil

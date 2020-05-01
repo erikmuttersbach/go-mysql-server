@@ -112,8 +112,6 @@ func (h *Handler) ComQuery(
 	query string,
 	callback func(*sqltypes.Result) error,
 ) (err error) {
-	logrus.Debugf("Executing Query %s", query)
-
 	ctx := h.sm.NewContextWithQuery(c, query)
 
 	if !h.e.Async(ctx, query) {
